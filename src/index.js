@@ -20,15 +20,3 @@ app.get('/', (req, res) => res.status(200).json({
     api_version: configBase.version,
     app: configBase.app_name
 }));
-
-app.get('/db', async (req, res) =>{
-    let content;
-    try{
-        content = await db.testRecord('*', 'geolingo', 'test', 'active', 1)
-    }catch{
-        return res.status(500).json({ status: 500, api_version: configBase.version, error: "Server Error Occured"});
-    };
-
-    console.log(content);
-    return res.status(200).send({ status: 200, api_version: configBase.version });
-});
