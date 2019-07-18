@@ -9,10 +9,19 @@ const pool = mysql.createPool({
 
 let db = {};
 
-// test
-db.testRecord = () => {
+// Universal
+db.getRecord = (pkey, schema, table, key, value) => {
     return new Promise((resolve, reject) => {
-        pool.query(`SELECT * FROM geolingo.test`, (error, results) => {
+        pool.query(`SELECT ? FROM ?.? WHERE ?=?`, [pkey, schema, table, key, value], (error, results) => {
+            if(error) return console.log(error), reject(error);
+            return resolve(results);
+        });
+    });
+}
+
+db.getRecordLower = () => {
+    return new Promise((resolve, reject) => {
+        pool.query(`SELECT ? FROM ?.? WHERE lower(?)=(?)`, [pkey, schema, table, key, value], (error, results) => {
             if(error) return console.log(error), reject(error);
             return resolve(results);
         });
